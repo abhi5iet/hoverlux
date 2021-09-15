@@ -3,6 +3,8 @@ import { Fragment } from "react";
 import EventContent from "../../components/event-detail/event-content";
 import EventLogistics from "../../components/event-detail/event-logistics";
 import EventSummary from "../../components/event-detail/event-summary";
+import Button from "../../components/UI/Button";
+import ErrorAlert from "../../components/UI/ErrorAlert";
 import { getEventById } from "../../dummy-data";
 
 
@@ -12,7 +14,16 @@ const SingleEvent = () => {
     const event = getEventById(eventId);
 
     if(!event){
-        return <p>No Event Found !</p>
+        return (
+            <Fragment>
+                <ErrorAlert>
+                    <p className="center">No Event Found !</p>
+                </ErrorAlert>
+                <div className="center">
+                    <Button link="/events">Show All Events</Button>
+                </div>
+            </Fragment>
+            )
     }
 
     return (
