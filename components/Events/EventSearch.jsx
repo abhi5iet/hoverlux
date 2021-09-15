@@ -1,22 +1,32 @@
-import React from 'react';
+import { useRef } from 'react';
 import Button from '../UI/Button';
 import evSearchStyles from '../../styles/EventSearch.module.css';
 
-const EventSearch = () => {
+const EventSearch = ({onSearch}) => {
+    const yearRef = useRef();
+    const monthRef = useRef();
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const year = yearRef.current.value;
+        const month = monthRef.current.value;
+
+        onSearch(year, month);
+    }
+
     return (
-        <form className={evSearchStyles.form}>
+        <form className={evSearchStyles.form} onSubmit={submitHandler}>
             <div className={evSearchStyles.controls}>
                 <div className={evSearchStyles.control}>
                     <label htmlFor="year">YEAR</label>
-                    <select name="year" id="year">
-                        <option value="2020">2020</option>
+                    <select name="year" id="year" ref={yearRef}>
                         <option value="2021">2021</option>
                         <option value="2022">2022</option>
                     </select>
                 </div>
                 <div className={evSearchStyles.control}>
                     <label htmlFor="month">Month</label>
-                    <select name="month" id="month">
+                    <select name="month" id="month" ref={monthRef}>
                         <option value="1">January</option>
                         <option value="2">February</option>
                         <option value="3">March</option>
@@ -32,7 +42,7 @@ const EventSearch = () => {
                     </select>
                 </div>
             </div>
-            <Button>SEARCH</Button>
+            <Button>Find Events</Button>
         </form>
     )
 }
