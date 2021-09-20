@@ -4,7 +4,7 @@ import EventLogistics from "../../components/event-detail/event-logistics";
 import EventSummary from "../../components/event-detail/event-summary";
 import Button from "../../components/UI/Button";
 import ErrorAlert from "../../components/UI/ErrorAlert";
-import { getEventById, getAllEvents } from "../../Utils/apiHandler";
+import { getEventById, getFeaturedEvents } from "../../Utils/apiHandler";
 
 
 const SingleEvent = ({ event }) => {
@@ -41,15 +41,16 @@ export async function getStaticProps(context) {
     return {
         props: {
             event
-        }
+        },
+        revalidate : 30
     }
 }
 
 export async function getStaticPaths(){
-    const allEvents = await getAllEvents();
+    const allEvents = await getFeaturedEvents();
     const allPaths = allEvents.map(item => {params : {eventId : item.id}});
     return {
         paths: allPaths,
-        fallback : false
+        fallback : 'blocking'
     }
 }
