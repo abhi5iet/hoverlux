@@ -1,19 +1,14 @@
-import { useRouter } from "next/dist/client/router";
 import { Fragment } from "react";
 import EventContent from "../../components/event-detail/event-content";
 import EventLogistics from "../../components/event-detail/event-logistics";
 import EventSummary from "../../components/event-detail/event-summary";
 import Button from "../../components/UI/Button";
 import ErrorAlert from "../../components/UI/ErrorAlert";
-import { getEventById } from "../../dummy-data";
+import { getEventById, getAllEvents } from "../../Utils/apiHandler";
 
 
-const SingleEvent = () => {
-    const router = useRouter();
-    const eventId = router.query.eventId;
-    const event = getEventById(eventId);
-
-    if(!event){
+const SingleEvent = ({ event }) => {
+    if (!event) {
         return (
             <Fragment>
                 <ErrorAlert>
@@ -23,7 +18,7 @@ const SingleEvent = () => {
                     <Button link="/events">Show All Events</Button>
                 </div>
             </Fragment>
-            )
+        )
     }
 
     return (
@@ -38,3 +33,23 @@ const SingleEvent = () => {
 }
 
 export default SingleEvent
+
+export async function getStaticProps(context) {
+    const eventId = context.params.eventId;
+    const event = await getEventById(eventId);
+
+    return {
+        props: {
+            event
+        }
+    }
+}
+
+export async function getStaticPaths(){
+    const allEvents = await getAllEvents();
+    const allPaths = allEvents.map(item => {params : {eventId : item.id}});
+    return {
+        paths: allPaths,
+        fallback : false
+    }
+}
