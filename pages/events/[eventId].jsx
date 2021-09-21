@@ -48,7 +48,9 @@ export async function getStaticProps(context) {
 
 export async function getStaticPaths(){
     const allEvents = await getFeaturedEvents();
-    const allPaths = allEvents.map(item => {params : {eventId : item.id}});
+    const allPaths = allEvents.map(item => {
+        return  {params : {eventId : item.id}}
+    });
     return {
         paths: allPaths,
         fallback : 'blocking'

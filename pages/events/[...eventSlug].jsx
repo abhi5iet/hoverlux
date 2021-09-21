@@ -56,8 +56,8 @@ export default FilteredEvent
 
 export async function getServerSideProps({params}){
 
-    const myPath = params.eventSlug;
-    
+    let myPath = params.eventSlug;
+
     myPath = myPath.map(Number);
     const [year, month] = myPath;
 
