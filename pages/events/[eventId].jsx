@@ -5,6 +5,7 @@ import EventSummary from "../../components/event-detail/event-summary";
 import Button from "../../components/UI/Button";
 import ErrorAlert from "../../components/UI/ErrorAlert";
 import { getEventById, getFeaturedEvents } from "../../Utils/apiHandler";
+import Head from 'next/head';
 
 
 const SingleEvent = ({ event }) => {
@@ -23,6 +24,10 @@ const SingleEvent = ({ event }) => {
 
     return (
         <Fragment>
+            <Head>
+                <title>{event.title}</title>
+                <meta name="description" content={event.description} />
+            </Head>
             <EventSummary title={event.title} />
             <EventLogistics date={event.date} address={event.location} image={event.image} imageAlt={event.title} />
             <EventContent>

@@ -1,10 +1,10 @@
-import { useRouter } from "next/dist/client/router"
 import { Fragment } from "react";
 import EventList from "../../components/Events/EventList";
 import ResultTitle from "../../components/Events/ResultTitle";
 import Button from "../../components/UI/Button";
 import ErrorAlert from "../../components/UI/ErrorAlert";
 import { getFilteredEvents } from "../../Utils/apiHandler";
+import Head from 'next/head';
 
 const FilteredEvent = ({hasError, filteredEvents, givenDate}) => {
     // const router = useRouter();
@@ -46,6 +46,10 @@ const FilteredEvent = ({hasError, filteredEvents, givenDate}) => {
 
     return (
         <Fragment>
+            <Head>
+                <title>Filtered Events</title>
+                <meta name="description" content={`All Events for ${givenDate.month} / ${givenDate.year}`} />
+            </Head>
             <ResultTitle date={date} />
             <EventList items={filteredEvents}/>
         </Fragment>
