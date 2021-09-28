@@ -6,6 +6,7 @@ import Button from "../../components/UI/Button";
 import ErrorAlert from "../../components/UI/ErrorAlert";
 import { getEventById, getFeaturedEvents } from "../../Utils/apiHandler";
 import Head from 'next/head';
+import Comments from "../../components/input/comments";
 
 
 const SingleEvent = ({ event }) => {
@@ -33,6 +34,7 @@ const SingleEvent = ({ event }) => {
             <EventContent>
                 {event.description}
             </EventContent>
+            <Comments eventId={event.id} />
         </Fragment>
     )
 }
