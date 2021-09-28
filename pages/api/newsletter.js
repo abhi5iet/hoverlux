@@ -1,6 +1,4 @@
-import { MongoClient } from "mongodb";
-import dotenv from 'dotenv';
-dotenv.config();
+import { connectDB, insertDoc } from "../../Utils/mongoUtils";
 
 export default async function handler(req, res) {
   
@@ -10,11 +8,20 @@ export default async function handler(req, res) {
     if(!email || !email.includes('@') || email.length <= 7){
       return res.status(422).json({message : 'Invalid Email Address !'});
     }
+    let client;
+    try{
+      client = await connectDB();
+    } catch(err){
+      return res.status(500).json({message : 'Connecting with Database Failed !'});
+    }
 
-    const client = await MongoClient.connect(process.env.MONGODB_ATLAS_LINK)
-    const db = client.db('events');
-    await db.collection('newsletter').insertOne({email : email});
-    client.close();
+    try{
+      await insertDoc(client, 'newsletter', {email : email})
+      client.close();
+    } catch(err){
+      return res.status(500).json({message : 'Insertion to Database Failed !'});
+    }
+    
     return res.status(201).json({message : 'Signed Up !'});
   }
 
