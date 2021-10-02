@@ -1,5 +1,4 @@
-import { getAllDocs } from "../../../Utils/mongoUtils";
-import { connectDB, insertDoc } from "../../Utils/mongoUtils";
+import { connectDB, insertDoc, getAllDocs } from "../../../Utils/mongoUtils";
 
 export default async function handler(req, res) {
     const { eventId } = req.query;
@@ -24,10 +23,11 @@ export default async function handler(req, res) {
             email,
             name,
             text,
+            eventId,
         }
         try{
-            const res = await insertDoc(client, 'comments', newComment);
-            newComment._id = res.insertedId;
+            const ress = await insertDoc(client, 'comments', newComment);
+            newComment._id = ress.insertedId;
             res.status(201).json({ message: 'Comment Added', Comment: newComment });
           } catch(err){
             res.status(500).json({message : 'Insertion to Database Failed !'});
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
         try{
             const documents = await getAllDocs(client, 'comments', {_id: -1});
-            res.send(200).json({ comments: documents });
+            res.status(200).json({ comments: documents });
         } catch(err){
             res.status(500).json({message : 'Getting Comments Failed !'});
         }
